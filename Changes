@@ -1,0 +1,46 @@
+Revision history for Perinci-Sub-GetArgs-Array
+
+0.08     2012-02-22
+
+         Rename distribution from Sub-Spec-GetArgs-Array to
+         Perinci-Sub-GetArgs-Array. Follow Rinci 1.1 specification.
+
+
+0.07     2012-01-27
+
+         No functional changes. Update to Data-Sah-0.02.
+
+
+0.06     2012-01-20
+
+         No functional changes. Mark deprecated.
+
+
+0.05     2011-11-23
+
+         No functional changes. Replace Data::Sah::Util with Data::Sah.
+
+
+0.04     2011-08-31
+
+         No functional changes. Updated because _parse_schema() is moved from
+         Sub::Spec::Utils to Data::Sah::Util.
+
+
+0.03     2011-08-25
+
+         No functional changes. Update to Sub::Spec 0.15 (attr_hashes ->
+         clause_sets).
+
+
+0.02     2011-08-03
+
+         [ENHANCEMENTS]
+
+         - For string arg with arg_greedy=1, returned joined elements (with ' ')
+           instead of an arrayref, for convenience.
+
+
+0.01     2011-07-28
+
+         First release.

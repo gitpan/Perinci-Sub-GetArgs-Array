@@ -1,0 +1,40 @@
+NAME
+    Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
+
+VERSION
+    version 0.08
+
+SYNOPSIS
+     use Perinci::Sub::GetArgs::Array;
+
+     my $res = get_args_from_array(array=>\@ary, meta=>$meta, ...);
+
+DESCRIPTION
+    This module provides get_args_from_array() (and
+    gencode_get_args_from_array(), upcoming). This module is used by, among
+    others, Perinci::Sub::GetArgs::Argv.
+
+    This module uses Log::Any for logging framework.
+
+    This module has Rinci metadata.
+
+FUNCTIONS
+    None are exported by default, but they are exportable.
+
+TODO
+    I am not particularly happy with the duplication of functionality
+    between this and the 'args_as' handler in Perinci::Sub::Wrapper. But the
+    later is a code to generate code, so I guess it's not so bad for now.
+
+SEE ALSO
+    Perinci
+
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2012 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
