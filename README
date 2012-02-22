@@ -2,7 +2,7 @@ NAME
     Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 VERSION
-    version 0.08
+    version 0.09
 
 SYNOPSIS
      use Perinci::Sub::GetArgs::Array;

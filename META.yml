@@ -23,4 +23,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/Perinci-Sub-GetArgs-Array/
   repository: http://github.com/sharyanto/perl-Perinci-Sub-GetArgs-Array
-version: 0.08
+version: 0.09
