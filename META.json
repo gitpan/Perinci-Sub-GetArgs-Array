@@ -1,0 +1,59 @@
+{
+   "abstract" : "Get subroutine arguments from array",
+   "author" : [
+      "Steven Haryanto <stevenharyanto@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Perinci-Sub-GetArgs-Array",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Module::Build" : "0.3601"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.3601"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Coverage::TrustPod" : "0",
+            "Test::Pod" : "1.41",
+            "Test::Pod::Coverage" : "1.08",
+            "Test::Rinci" : "0.01"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Data::Clone" : "0",
+            "Data::Sah" : "0",
+            "Log::Any" : "0",
+            "Rinci" : "v1.1.6",
+            "perl" : "5.010001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "homepage" : "http://search.cpan.org/dist/Perinci-Sub-GetArgs-Array/",
+      "repository" : {
+         "url" : "http://github.com/sharyanto/perl-Perinci-Sub-GetArgs-Array"
+      }
+   },
+   "version" : "0.10"
+}
+
