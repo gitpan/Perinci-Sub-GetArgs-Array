@@ -2,7 +2,7 @@ NAME
     Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 VERSION
-    version 0.10
+    version 0.11
 
 SYNOPSIS
      use Perinci::Sub::GetArgs::Array;
@@ -54,6 +54,10 @@ FUNCTIONS
 
     *   array* => *array*
 
+        NOTE: array will be modified/emptied (elements will be taken from
+        the array as they are put into the resulting args). Copy your array
+        first if you want to preserve its content.
+
     *   meta* => *hash*
 
     Return value:
@@ -72,6 +76,22 @@ TODO
 
 SEE ALSO
     Perinci
+
+HOMEPAGE
+    Please visit the project's homepage at
+    <https://metacpan.org/release/Perinci-Sub-GetArgs-Array>.
+
+SOURCE
+    Source repository is at
+    <https://github.com/sharyanto/perl-Perinci-Sub-GetArgs-Array>.
+
+BUGS
+    Please report any bugs or feature requests on the bugtracker website
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=Perinci-Sub-GetArgs-A
+    rray>
+
+    When submitting a bug or request, please include a test-file or a patch
+    to an existing test-file that illustrates the bug or desired feature.
 
 AUTHOR
     Steven Haryanto <stevenharyanto@gmail.com>

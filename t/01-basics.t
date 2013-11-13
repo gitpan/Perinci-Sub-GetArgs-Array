@@ -19,12 +19,12 @@ $meta = {
 test_getargs(
     name=>'no arg -> ok',
     meta=>$meta, array=>[],
-    status=>200, args=>{},
+    status=>200, args=>{}, remaining_array=>[],
 );
 test_getargs(
     name=>'extra arg -> 400',
     meta=>$meta, array=>[1],
-    status=>400
+    status=>400,
 );
 test_getargs(
     name=>'allow_extra_elems=1',
@@ -42,17 +42,17 @@ $meta = {
 test_getargs(
     name=>'arg1 only',
     meta=>$meta, array=>[1],
-    status=>200, args=>{arg1=>1},
+    status=>200, args=>{arg1=>1}, remaining_array=>[],
 );
 test_getargs(
     name=>'arg1 & arg2 (1)',
     meta=>$meta, array=>[1, 2],
-    status=>200, args=>{arg1=>1, arg2=>2},
+    status=>200, args=>{arg1=>1, arg2=>2}, remaining_array=>[],
 );
 test_getargs(
     name=>'arg1 & arg2 (2)',
     meta=>$meta, array=>[2, 1],
-    status=>200, args=>{arg1=>2, arg2=>1},
+    status=>200, args=>{arg1=>2, arg2=>1}, remaining_array=>[],
 );
 
 $meta = {
@@ -64,7 +64,7 @@ $meta = {
 test_getargs(
     name=>'arg_greedy (1)',
     meta=>$meta, array=>[1, 2, 3],
-    status=>200, args=>{arg1=>[1, 2, 3]},
+    status=>200, args=>{arg1=>[1, 2, 3]}, remaining_array=>[],
 );
 
 $meta = {
@@ -77,7 +77,7 @@ $meta = {
 test_getargs(
     name=>'arg_greedy (2)',
     meta=>$meta, array=>[1, 2, 3, 4],
-    status=>200, args=>{arg1=>1, arg2=>[2, 3, 4]},
+    status=>200, args=>{arg1=>1, arg2=>[2, 3, 4]}, remaining_array=>[],
 );
 
 $meta = {
@@ -90,7 +90,7 @@ $meta = {
 test_getargs(
     name=>'arg_greedy (3, string)',
     meta=>$meta, array=>[1, 2, 3, 4],
-    status=>200, args=>{arg1=>1, arg2=>"2 3 4"},
+    status=>200, args=>{arg1=>1, arg2=>"2 3 4"}, remaining_array=>[],
 );
 
 DONE_TESTING:
@@ -100,7 +100,8 @@ sub test_getargs {
     my (%args) = @_;
 
     subtest $args{name} => sub {
-        my %input_args = (array=>$args{array}, meta=>$args{meta});
+        my $ary = [ @{ $args{array} } ];
+        my %input_args = (array=>$ary, meta=>$args{meta});
         for (qw/allow_extra_elems/) {
             $input_args{$_} = $args{$_} if defined $args{$_};
         }
@@ -113,6 +114,10 @@ sub test_getargs {
             is_deeply($res->[2], $args{args}, "result")
                 or diag explain $res->[2];
         }
+        if ($args{remaining_array}) {
+            is_deeply($ary, $args{remaining_array}, "remaining array")
+                or diag explain $ary;
+        }
         #if ($args{posttest}) {
         #    $args{posttest}->();
         #}
@@ -120,4 +125,3 @@ sub test_getargs {
         done_testing();
     };
 }
-

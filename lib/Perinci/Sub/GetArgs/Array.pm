@@ -12,7 +12,7 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_args_from_array);
 
-our $VERSION = '0.10'; # VERSION
+our $VERSION = '0.11'; # VERSION
 
 our %SPEC;
 
@@ -45,6 +45,13 @@ _
         array => {
             schema => ['array*' => {}],
             req => 1,
+            description => <<'_',
+
+NOTE: array will be modified/emptied (elements will be taken from the array as
+they are put into the resulting args). Copy your array first if you want to
+preserve its content.
+
+_
         },
         meta => {
             schema => ['hash*' => {}],
@@ -65,9 +72,8 @@ _
 };
 sub get_args_from_array {
     my %input_args = @_;
-    # don't assign this to $array, we have @array too, avoid error-prone
-    $input_args{array} or return [400, "Please specify array"];
-    my $meta      = $input_args{meta};
+    my $ary  = $input_args{array} or return [400, "Please specify array"];
+    my $meta = $input_args{meta};
     if ($meta) {
         my $v = $meta->{v} // 1.0;
         return [412, "Only metadata version 1.1 is supported, given $v"]
@@ -84,17 +90,16 @@ sub get_args_from_array {
     return [400, "Please specify meta"] if !$meta && !$args_p;
     #$log->tracef("-> get_args_from_array(), array=%s", $array);
 
-    my @array = @{$input_args{array}};
     my $args = {};
 
-    for my $i (reverse 0..$#array) {
+    for my $i (reverse 0..@$ary-1) {
         #$log->tracef("i=$i");
         while (my ($a, $as) = each %$args_p) {
             my $o = $as->{pos};
             if (defined($o) && $o == $i) {
                 if ($as->{greedy}) {
                     my $type = $as->{schema}[0];
-                    my @elems = splice(@array, $i);
+                    my @elems = splice(@$ary, $i);
                     if ($type eq 'array') {
                         $args->{$a} = \@elems;
                     } else {
@@ -102,7 +107,7 @@ sub get_args_from_array {
                     }
                     #$log->tracef("assign %s to arg->{$a}", $args->{$a});
                 } else {
-                    $args->{$a} = splice(@array, $i, 1);
+                    $args->{$a} = splice(@$ary, $i, 1);
                     #$log->tracef("assign %s to arg->{$a}", $args->{$a});
                 }
             }
@@ -110,7 +115,7 @@ sub get_args_from_array {
     }
 
     return [400, "There are extra, unassigned elements in array: [".
-                join(", ", @array)."]"] if @array && !$allow_extra_elems;
+                join(", ", @$ary)."]"] if @$ary && !$allow_extra_elems;
 
     [200, "OK", $args];
 }
@@ -122,7 +127,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -130,7 +135,7 @@ Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -189,6 +194,10 @@ function will just ignore them.
 
 =item * B<array>* => I<array>
 
+NOTE: array will be modified/emptied (elements will be taken from the array as
+they are put into the resulting args). Copy your array first if you want to
+preserve its content.
+
 =item * B<meta>* => I<hash>
 
 =back
@@ -206,6 +215,22 @@ to generate code, so I guess it's not so bad for now.
 =head1 SEE ALSO
 
 L<Perinci>
+
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/Perinci-Sub-GetArgs-Array>.
+
+=head1 SOURCE
+
+Source repository is at L<https://github.com/sharyanto/perl-Perinci-Sub-GetArgs-Array>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=Perinci-Sub-GetArgs-Array>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
