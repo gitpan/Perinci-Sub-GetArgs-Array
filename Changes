@@ -1,5 +1,12 @@
 Revision history for Perinci-Sub-GetArgs-Array
 
+0.12     2014-04-10 (SHARYANTO)
+
+         - No functional changes.
+
+         - Replace Data::Clone with Function::Fallback::CoreOrPP.
+
+
 0.11     2013-11-13 (SHARYANTO)
 
          [INCOMPATIBLE CHANGES]

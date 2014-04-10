@@ -5,14 +5,14 @@ use strict;
 use warnings;
 use Log::Any '$log';
 
-use Data::Clone;
 use Data::Sah;
+use Function::Fallback::CoreOrPP qw(clone);
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_args_from_array);
 
-our $VERSION = '0.11'; # VERSION
+our $VERSION = '0.12'; # VERSION
 
 our %SPEC;
 
@@ -21,9 +21,9 @@ $SPEC{get_args_from_array} = {
     summary => 'Get subroutine arguments (%args) from array',
     description => <<'_',
 
-Using information in metadata's 'args' property (particularly the 'pos' and
-'greedy' arg type clauses), extract arguments from an array into a hash
-\%args, suitable for passing into subs.
+Using information in metadata's `args` property (particularly the `pos` and
+`greedy` arg type clauses), extract arguments from an array into a hash
+`\%args`, suitable for passing into subs.
 
 Example:
 
@@ -36,7 +36,7 @@ Example:
         }
     }
 
-then 'get_args_from_array(array=>[2, 3], meta=>$meta)' will produce:
+then `get_args_from_array(array=>[2, 3], meta=>$meta)` will produce:
 
     [200, "OK", {a=>2, b=>3}]
 
@@ -63,7 +63,7 @@ _
             description => <<'_',
 
 If set to 1, then if there are array elements unassigned to one of the arguments
-(due to missing 'pos', for example), instead of generating an error, the
+(due to missing `pos`, for example), instead of generating an error, the
 function will just ignore them.
 
 _
@@ -135,7 +135,7 @@ Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 
@@ -157,13 +157,13 @@ This module has L<Rinci> metadata.
 None are exported by default, but they are exportable.
 
 
-None are exported by default, but they are exportable.
-
 =head2 get_args_from_array(%args) -> [status, msg, result, meta]
 
-Using information in metadata's 'args' property (particularly the 'pos' and
-'greedy' arg type clauses), extract arguments from an array into a hash
-\%args, suitable for passing into subs.
+Get subroutine arguments (%args) from array.
+
+Using information in metadata's C<args> property (particularly the C<pos> and
+C<greedy> arg type clauses), extract arguments from an array into a hash
+C<\%args>, suitable for passing into subs.
 
 Example:
 
@@ -176,7 +176,7 @@ Example:
         }
     }
 
-then 'getI<args>from_array(array=>[2, 3], meta=>$meta)' will produce:
+then C<get_args_from_array(array=>[2, 3], meta=>$meta)> will produce:
 
     [200, "OK", {a=>2, b=>3}]
 
@@ -189,7 +189,7 @@ Arguments ('*' denotes required arguments):
 Allow extra/unassigned elements in array.
 
 If set to 1, then if there are array elements unassigned to one of the arguments
-(due to missing 'pos', for example), instead of generating an error, the
+(due to missing C<pos>, for example), instead of generating an error, the
 function will just ignore them.
 
 =item * B<array>* => I<array>
@@ -204,7 +204,14 @@ preserve its content.
 
 Return value:
 
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+Returns an enveloped result (an array).
+
+First element (status) is an integer containing HTTP status code
+(200 means OK, 4xx caller error, 5xx function error). Second element
+(msg) is a string containing error message, or 'OK' if status is
+200. Third element (result) is optional, the actual result. Fourth
+element (meta) is called result metadata and is optional, a hash
+that contains extra information.
 
 =head1 TODO
 
@@ -238,7 +245,7 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Steven Haryanto.
+This software is copyright (c) 2014 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
