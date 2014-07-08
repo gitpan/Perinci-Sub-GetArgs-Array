@@ -2,7 +2,9 @@ NAME
     Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 VERSION
-    version 0.12
+    This document describes version 0.13 of Perinci::Sub::GetArgs::Array
+    (from Perl distribution Perinci-Sub-GetArgs-Array), released on
+    2014-07-08.
 
 SYNOPSIS
      use Perinci::Sub::GetArgs::Array;

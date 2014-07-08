@@ -1,5 +1,12 @@
 Revision history for Perinci-Sub-GetArgs-Array
 
+0.13     2014-07-08 (SHARYANTO)
+
+         - No functional changes.
+
+         - Replace Data::Sah with Data::Sah::Normalize to reduce overhead/deps.
+
+
 0.12     2014-04-10 (SHARYANTO)
 
          - No functional changes.
