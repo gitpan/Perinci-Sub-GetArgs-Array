@@ -17,16 +17,14 @@ meta-spec:
   version: '1.4'
 name: Perinci-Sub-GetArgs-Array
 requires:
-  Data::Sah::Normalize: '0'
-  Function::Fallback::CoreOrPP: '0'
-  Log::Any: '0'
+  Perinci::Sub::Normalize: '0'
   Rinci: v1.1.6
   perl: '5.010001'
 resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Perinci-Sub-GetArgs-Array
   homepage: https://metacpan.org/release/Perinci-Sub-GetArgs-Array
   repository: git://github.com/sharyanto/perl-Perinci-Sub-GetArgs-Array.git
-version: '0.13'
+version: '0.14'
 x_Dist_Zilla:
   perl:
     version: '5.018002'

@@ -1,5 +1,14 @@
 Revision history for Perinci-Sub-GetArgs-Array
 
+0.14     2014-07-08 (SHARYANTO)
+
+         - No functional changes.
+
+         - Use Perinci::Sub::Normalize to simplify code.
+
+         - Remove internal _args_p, replace with meta_is_normalized.
+
+
 0.13     2014-07-08 (SHARYANTO)
 
          - No functional changes.

@@ -3,16 +3,13 @@ package Perinci::Sub::GetArgs::Array;
 use 5.010001;
 use strict;
 use warnings;
-use Log::Any '$log';
-
-use Data::Sah::Normalize qw(normalize_schema);
-use Function::Fallback::CoreOrPP qw(clone);
+#use Log::Any '$log';
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_args_from_array);
 
-our $VERSION = '0.13'; # VERSION
+our $VERSION = '0.14'; # VERSION
 
 our %SPEC;
 
@@ -57,6 +54,12 @@ _
             schema => ['hash*' => {}],
             req => 1,
         },
+        meta_is_normalized => {
+            summary => 'Can be set to 1 if your metadata is normalized, '.
+                'to avoid duplicate effort',
+            schema => 'bool',
+            default => 0,
+        },
         allow_extra_elems => {
             schema => ['bool' => {default=>0}],
             summary => 'Allow extra/unassigned elements in array',
@@ -71,27 +74,19 @@ _
     },
 };
 sub get_args_from_array {
-    my %input_args = @_;
-    my $ary  = $input_args{array} or return [400, "Please specify array"];
-    my $meta = $input_args{meta};
-    if ($meta) {
-        my $v = $meta->{v} // 1.0;
-        return [412, "Only metadata version 1.1 is supported, given $v"]
-            unless $v == 1.1;
+    my %fargs = @_;
+    my $ary  = $fargs{array} or return [400, "Please specify array"];
+    my $meta = $fargs{meta} or return [400, "Please specify meta"];
+    unless ($fargs{meta_is_normalized}) {
+        require Perinci::Sub::Normalize;
+        $meta = Perinci::Sub::Normalize::normalize_function_metadata(
+            $meta);
     }
-    my $args_p    = $input_args{_args_p}; # allow us to skip cloning
-    if (!$args_p) {
-        $args_p = clone($meta->{args} // {});
-        while (my ($a, $as) = each %$args_p) {
-            $as->{schema} = normalize_schema($as->{schema} // 'any');
-        }
-    }
-    my $allow_extra_elems = $input_args{allow_extra_elems} // 0;
-    return [400, "Please specify meta"] if !$meta && !$args_p;
-    #$log->tracef("-> get_args_from_array(), array=%s", $array);
+    my $allow_extra_elems = $fargs{allow_extra_elems} // 0;
 
-    my $args = {};
+    my $rargs = {};
 
+    my $args_p = $meta->{args} // {};
     for my $i (reverse 0..@$ary-1) {
         #$log->tracef("i=$i");
         while (my ($a, $as) = each %$args_p) {
@@ -101,14 +96,14 @@ sub get_args_from_array {
                     my $type = $as->{schema}[0];
                     my @elems = splice(@$ary, $i);
                     if ($type eq 'array') {
-                        $args->{$a} = \@elems;
+                        $rargs->{$a} = \@elems;
                     } else {
-                        $args->{$a} = join " ", @elems;
+                        $rargs->{$a} = join " ", @elems;
                     }
-                    #$log->tracef("assign %s to arg->{$a}", $args->{$a});
+                    #$log->tracef("assign %s to arg->{$a}", $rargs->{$a});
                 } else {
-                    $args->{$a} = splice(@$ary, $i, 1);
-                    #$log->tracef("assign %s to arg->{$a}", $args->{$a});
+                    $rargs->{$a} = splice(@$ary, $i, 1);
+                    #$log->tracef("assign %s to arg->{$a}", $rargs->{$a});
                 }
             }
         }
@@ -117,7 +112,7 @@ sub get_args_from_array {
     return [400, "There are extra, unassigned elements in array: [".
                 join(", ", @$ary)."]"] if @$ary && !$allow_extra_elems;
 
-    [200, "OK", $args];
+    [200, "OK", $rargs];
 }
 
 1;
@@ -135,7 +130,7 @@ Perinci::Sub::GetArgs::Array - Get subroutine arguments from array
 
 =head1 VERSION
 
-This document describes version 0.13 of Perinci::Sub::GetArgs::Array (from Perl distribution Perinci-Sub-GetArgs-Array), released on 2014-07-08.
+This document describes version 0.14 of Perinci::Sub::GetArgs::Array (from Perl distribution Perinci-Sub-GetArgs-Array), released on 2014-07-08.
 
 =head1 SYNOPSIS
 
@@ -148,13 +143,7 @@ This document describes version 0.13 of Perinci::Sub::GetArgs::Array (from Perl 
 This module provides get_args_from_array(). This module is used by, among
 others, L<Perinci::Sub::GetArgs::Argv>.
 
-This module uses L<Log::Any> for logging framework.
-
-This module has L<Rinci> metadata.
-
 =head1 FUNCTIONS
-
-None are exported by default, but they are exportable.
 
 
 =head2 get_args_from_array(%args) -> [status, msg, result, meta]
@@ -199,6 +188,10 @@ they are put into the resulting args). Copy your array first if you want to
 preserve its content.
 
 =item * B<meta>* => I<hash>
+
+=item * B<meta_is_normalized> => I<bool> (default: 0)
+
+Can be set to 1 if your metadata is normalized, to avoid duplicate effort.
 
 =back
 
